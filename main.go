@@ -18,6 +18,6 @@ func main() {
 		return
 	}
 
-	stats(email)
+	//stats(email)
 
 }

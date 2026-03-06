@@ -1,0 +1,3 @@
+go mod init meu-projeto-go
+go get gopkg.in/src-d/go-git.v4
+https://github.com/src-d/go-git
