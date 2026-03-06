@@ -11,13 +11,12 @@ func main() {
 	var email string
 
 	flag.StringVar(&folder, "add", "", "add a new folder to scan for Git repositories")
-	flag.StringVar(&email, "email", "your@email.com", "the email to scan")
+	flag.StringVar(&email, "email", "", "the email to scan (leave empty to include all authors)")
 
 	flag.Parse()
 
 	if folder != "" {
 		visualizer.Scan(folder)
-		return
 	}
 
 	visualizer.Stats(email)
