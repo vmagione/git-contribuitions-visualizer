@@ -3,7 +3,6 @@ package visualizer
 import (
 	"bufio"
 	"fmt"
-	"io"
 	"log"
 	"os"
 	"os/user"
@@ -98,11 +97,9 @@ func parseFileLinesToSlice(filePath string) []string {
 	for scanner.Scan() {
 		lines = append(lines, scanner.Text())
 	}
-	err := scanner.Err()
-	if err != nil {
-		if err != io.EOF {
-			panic(err)
-		}
+
+	if err := scanner.Err(); err != nil {
+		panic(err)
 	}
 	return lines
 }
@@ -110,11 +107,16 @@ func parseFileLinesToSlice(filePath string) []string {
 // openFile opens the file located at `filePath`. Creates it if not existing.
 
 func openFile(filePath string) *os.File {
-	f, err := os.OpenFile(filePath, os.O_APPEND|os.O_WRONLY, 0755)
+	f, err := os.OpenFile(filePath, os.O_RDONLY, 0644)
 	if err != nil {
 		if os.IsNotExist(err) {
-			// File does not exist
-			_, err = os.Create(filePath)
+			// File does not exist, create and reopen for reading.
+			createdFile, err := os.OpenFile(filePath, os.O_CREATE|os.O_RDWR, 0644)
+			if err != nil {
+				panic(err)
+			}
+			createdFile.Close()
+			f, err = os.OpenFile(filePath, os.O_RDONLY, 0644)
 			if err != nil {
 				panic(err)
 			}
@@ -152,5 +154,5 @@ func sliceContains(slice []string, value string) bool {
 
 func dumpStringsSliceToFile(repos []string, filePath string) {
 	content := strings.Join(repos, "\n")
-	os.WriteFile(filePath, []byte(content), 0755)
+	os.WriteFile(filePath, []byte(content), 0644)
 }
