@@ -1,4 +1,4 @@
-package main
+package visualizer
 
 import (
 	"bufio"
@@ -13,7 +13,7 @@ import (
 // scan given a path crawls it and its subfolders
 // searching for Git repositories
 
-func scan(folder string) {
+func Scan(folder string) {
 	fmt.Printf("Found folders:\n\n")
 	repositories := recursiveScanFolder(folder)
 	filePath := getDotFilePath()
@@ -47,7 +47,7 @@ func scanGitFolders(folders []string, folder string) []string {
 				folders = append(folders, path)
 				continue
 			}
-			if file.Name() == "vendor" || file.Name() == "node_modules" {
+			if file.Name() == "vendor" || file.Name() == "node_modules" || file.Name() == ".godot" || file.Name() == "Library" || file.Name() == "Projetos Unity" {
 				continue
 			}
 			folders = scanGitFolders(folders, path)

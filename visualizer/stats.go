@@ -1,4 +1,4 @@
-package main
+package visualizer
 
 import (
 	"fmt"
@@ -17,7 +17,7 @@ type column []int
 
 // stats generates a nice graph of your Git contributions
 
-func stats(email string) {
+func Stats(email string) {
 	commits := processRepositories(email)
 	printCommitsStats(commits)
 }
